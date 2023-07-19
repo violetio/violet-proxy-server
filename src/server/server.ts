@@ -90,8 +90,8 @@ apiRoute.all('/api/*', async (req: any, res: any) => {
     const response = await axios(parsedUrl(req), {
       method: req.method,
       // The Violet API expects snakecase keys in the query and body parameters
-      data: req.body ? snakecaseKeys(req.body, { deep: true }) : undefined,
-      params: snakecaseKeys(req.query, { deep: true }),
+      data: req.body,
+      params: req.query,
       headers: {
         [VIOLET_APP_SECRET_HEADER]: process.env.APP_SECRET as string,
         [VIOLET_APP_ID_HEADER]: process.env.APP_ID as string,
@@ -102,14 +102,7 @@ apiRoute.all('/api/*', async (req: any, res: any) => {
     res
       .status(response.status)
       // Convert snakecase keys into camelcase for use within the project
-      .json(
-        camelcaseKeys(response.data, {
-          deep: true,
-          // The snakecaseKeys library does not recognize numbers as camelcase for conversion
-          // so we are excluding these keys to avoid mix ups when we convert between camelcaseKeys/snakecaseKeys
-          exclude: ['address_1', 'address_2'],
-        })
-      );
+      .json(response.data);
   } catch (e: any) {
     console.log(e)
     res.status(e.response?.status).json(e.response.data);
