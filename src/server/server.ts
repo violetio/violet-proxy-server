@@ -86,13 +86,11 @@ const parsedUrl = (req: any) => {
 apiRoute.use(injectUserToken)
 apiRoute.use(express.json());
 apiRoute.all('/api/*', async (req: any, res: any) => {
-  const outBody = req.body //? snakecaseKeys(req.body, { deep: true }) : undefined
-  console.log(`outBody: ${outBody}`)
   try {
     const response = await axios(parsedUrl(req), {
       method: req.method,
       // The Violet API expects snakecase keys in the query and body parameters
-      data: req.body,
+      data: req.body ? snakecaseKeys(req.body, { deep: true }) : undefined,
       params: snakecaseKeys(req.query, { deep: true }),
       headers: {
         [VIOLET_APP_SECRET_HEADER]: process.env.APP_SECRET as string,
