@@ -84,8 +84,8 @@ const parsedUrl = (req: any) => {
  * without exposing it to the browser.
  */
 apiRoute.use(injectUserToken)
+apiRoute.use(express.json());
 apiRoute.all('/api/*', async (req: any, res: any) => {
-
   try {
     const response = await axios(parsedUrl(req), {
       method: req.method,

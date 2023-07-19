@@ -2,11 +2,11 @@
   "name": "violet-proxy-server",
   "version": "1.0.0",
   "description": "Proxy Server for safer authentication into the Violet API",
-  "main": "dist/server/server.js",
   "scripts": {
     "build": "tsc",
+    "prebuild": "rm -rf dist",
     "prestart": "npm run build",
-    "start": "node dist/server/server.js",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
